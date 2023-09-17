@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 class="listing-heading">{{ objects.title }}</h2>
+
+                <img src="{{ objects.imageUrl }}" alt="Image Url">
+                <p>Description : {{ objects.description }}</p>
+                <p>Price : ${{ objects.price }}</p>
+                <P>By : {{ owner }}</P>
+                <br>
+
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'watch' objects.id %}">
+                        <button>Add to Watchlist</button>
+                    </a>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    <form action"{% url 'listing' objects.id %}" method="post">
+                        {% csrf_token %}
+                        {{ comments }}
+                        <input type="submit" value="Comment">
+                    </form>
+                {% endif %}
+                    <br>
+                <h2>Comments</h2>
+                    <br>
+                {% for comment in all_comments %}
+
+                    <P> {{ comment.comment }}  - {{ comment.owner }}   - {{ comment.datetime }} </P> 
+
+                {% endfor%}
+
+{% endblock %}
